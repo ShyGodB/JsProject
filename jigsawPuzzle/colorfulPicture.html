@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>拼图游戏</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			} 
+			body {
+				background: #626567;
+			}
+			#topBox {
+				width: 100%;
+				height: 130px;
+				position: relative;
+			}
+			.picture {
+				width: 144px;
+				height: 144px;
+				position: absolute;
+			}
+			#image1 {
+				left: 350px;
+			}
+			#image2 {	
+				left: 500px;
+			}
+			#image3 {
+				left: 650px;
+			}
+			#image4 {
+				left: 800px;
+			}
+			#image5 {
+				left: 950px;
+			}
+			#topBox .img {
+				width: 144px;
+				height: 90px;
+				position: absolute;
+				display: block;	
+			}
+			#startGame {
+				width: 80px;
+				height: 30px;
+				left: 678px;
+				top: 94px;
+				position: absolute;
+				border: 1px solid #000;
+				border-radius: 5px;
+			}
+			#mainBox {
+				width: 960px;
+				height: 600px;
+				position: relative;
+				cursor: pointer;
+			}
+			#mainImage {
+				width: 100%;
+				top: 20px;
+				display: block;
+			}
+			.box {
+				position: absolute;
+				background: #A1887F;;
+				left: 0;
+				border: 1px groove black;
+				cursor: pointer;
+			}
+			table {
+				border-spacing: 0px;
+			}
+			div {
+				width: 240px;
+				height: 150px;
+			}
+			.image {
+				width: 240px;
+				height: 150px;
+				background-image: url("image/1.jpg");
+				background-size: 960px 600px;
+			}
+			#child-1 {
+				background-position: 0px 0px;
+			}
+			#child-2 {
+				background-position: -240px 0px;
+			}
+			#child-3 {
+				background-position: -480px 0px;
+			}
+			#child-4 {
+				background-position: -720px 0px;
+			}
+			#child-5 {
+				background-position: 0px -150px;
+			}
+			#child-6 {
+				background-position: -240px -150px;
+			}
+			#child-7 {
+				background-position: -480px -150px;
+			}
+			#child-8 {
+				background-position: -720px -150px;
+			}
+			#child-9 {
+				background-position: 0px -300px;
+			}
+			#child-10 {
+				background-position: -240px -300px;
+			}
+			#child-11 {
+				background-position: -480px -300px;
+			}
+			#child-12 {
+				background-position: -720px -300px;
+			}
+			#child-13 {
+				background-position: 0px -450px;
+			}
+			#child-14 {
+				background-position: -240px -450px;
+			}
+			#child-15 {
+				background-position: -480px -450px;
+			}
+			#child-16 {
+				background-position: -720px -450px;
+			}
+			#tableBox {
+				width: 960px;
+				height: 600px;
+				left: 240px;
+				top: -600px;
+				display: none;
+				position: relative;
+				cursor: pointer;
+			}
+			#leftbox {
+				position: relative;
+			}
+			p {
+				width: 30px;
+				height: 200px;
+				font-family: STXingkai;
+				font-size: 30px;
+				position: absolute;
+			}
+			#p1 {
+				left: 80px;
+				top: 50px;
+			}
+			#p2 {
+				left: 130px;
+				top: 100px;
+			}
+			#p3 {
+				left: 1350px;
+				top: 50px;
+			}
+			#p4 {
+				left: 1300px;
+				top: 100px;
+			}
+			#p5 {
+				width: 100%;
+				height: 30px;
+				left: 23%;
+				top: 737px;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<audio src="music/The Truth That You Leave.mp3" autoplay="autoplay" id="music"></audio>
+		<div id="topBox" center>
+			<div id="image1" class="picture">
+				<img src="image/1.jpg" id="meinv" class="img">
+			</div>
+			<div id="image2" class="picture">
+				<img src="image/2.jpg" id="dog" class="img">
+			</div>
+			<div id="image3" class="picture">
+				<img src="image/3.jpg" id="dongman" class="img">
+			</div>
+			<div id="image4" class="picture">
+				<img src="image/4.jpg" id="dmc" class="img">
+			</div>
+			<div id="image5" class="picture">
+				<img src="image/5.jpg" id="three" class="img">
+			</div>
+			<button type="button" id="startGame" onclick="exchange()">开始游戏</button>
+		</div>
+			
+		<center><div id="mainBox">
+			<img src="image/1.jpg" id="mainImage">
+		</div></center>
+
+		<div id="tableBox">
+			<table border="1">
+				<tr>
+					<td>
+						<div id="parent-1" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-1" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-2" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-2" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-3" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-3" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-4" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-4" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td>
+						<div id="parent-5" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-5" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-6" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-6" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-7" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-7" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-8" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-8" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+					
+				</tr>
+
+
+				<tr>
+
+					<td>
+						<div id="parent-9" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-9" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-10" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-10" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-11" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-11" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-12" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-12" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+					
+				</tr>
+
+
+				<tr>
+					<td>
+						<div id="parent-13" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-13" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-14" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-14" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-15" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-15" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+
+					<td>
+						<div id="parent-16" ondrop="drop(event)" ondragover="over(event)">
+							<div id="child-16" class="image" draggable="true" ondragstart="drag(event)"></div>
+						</div>
+					</td>
+					
+				</tr>
+			</table>
+		</div>
+
+		<div id="leftBox">
+			<p id="p1">周天霞光夺宇内一色无限美</p>
+			<p id="p2">叶轮鲜润叹天下万物有真秀</p>
+			<p id="p3">芙蓉不及美人妆</p>
+			<p id="p4">水殿风来珠翠香</p>
+			<p id="p5">提示：点击切换图片，点击开始游戏按钮播放背景音乐开始游戏！</p>
+		</div>
+
+		<script>
+			let picture = document.getElementsByClassName('picture');
+			let images = document.getElementsByClassName('image');
+			let mainImage = document.getElementById('mainImage');
+			let startGame = document.getElementById('startGame');
+			let music = document.getElementById("music");
+
+			for(let i = 0; i < picture.length; i++) {
+				picture[i].onclick = function() {
+					mainImage.style.display = 'block';
+					tableBox.style.display = 'none';
+					mainImage.src = "image/"+ (i+1) +".jpg";
+					for(let j = 0; j < 16; j++) {
+						imageUrl = 'url(image/' + (i+1) + '.jpg)';
+						images[j].style.backgroundImage = imageUrl;
+					}
+				}
+			}
+
+			function exchange() {
+				music.play();
+				mainImage.style.display = 'none';
+				tableBox.style.display = 'block';
+				for(let i = 0; i < 50; i++) {
+					let m = Math.floor(Math.random() * 16);
+					let n = Math.floor(Math.random() * 16);
+					imagesmParent = images[m].parentNode;
+					imagesnParent = images[n].parentNode;
+					imagesmParent.appendChild(images[n]);
+					imagesnParent.appendChild(images[m]);
+				}
+			}
+
+			function drag(e) {
+				let childId = e.target.id;
+				e.dataTransfer.setData('id',childId);
+			}
+
+			function over(e) {
+				e.preventDefault();
+			}
+
+			function drop(e) {
+				let parentId = e.dataTransfer.getData('id');
+				let dropId = e.target.id;
+				let drag = document.getElementById(parentId);
+				let replace = document.getElementById(dropId);
+				let dragParent = drag.parentNode;
+				let replaceParent = replace.parentNode;
+				dragParent.appendChild(replace);
+				replaceParent.appendChild(drag);
+				isWin();
+			}
+			
+			function isWin() {
+				let sum = 0;
+				let imageDivs = document.getElementsByClassName('image');
+				for(let i = 0; i < imageDivs.length; i++) {
+					let imageDiv = imageDivs[i];
+					let imageParentDiv = imageDiv.parentNode;
+					let imageDivId = imageDiv.getAttribute('id');
+					let imageParentDivId = imageParentDiv.getAttribute('id');
+					
+					/* //使用replace替换掉id字符串前面的，只保留数字，然后比较数字
+					if(imageDivId.replace('child-', '') === imageParentDivId.replace('parent-', '')) {
+						sum++;
+					} else {
+						return;
+					}
+					*/
+
+					//使用substr直接截取字符串后半部分的数字，来进行比较
+					let childLastId = imageDivId.substr(6,2);
+					let parentLastId = imageParentDivId.substr(7,2);
+					if(childLastId === parentLastId) {
+						sum++;
+					} else {
+						return;
+					}
+				}
+				if(sum === 16) {
+					alert('恭喜你！成功的完成了拼图！');
+				}
+			}
+		</script>
+
+	</body>
+</html>

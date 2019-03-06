@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>拼图游戏</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			} 
+			table {
+				border-spacing: 0px;
+			}
+			div {
+				width: 240px;
+				height: 150px;
+			}
+			.image {
+				width: 240px;
+				height: 150px;
+				background-image: url(image/3.jpg);
+				background-size: 960px 600px;
+			}
+			#child-1 {
+				background-position: 0px 0px;
+			}
+			#child-2 {
+				background-position: -240px 0px;
+			}
+			#child-3 {
+				background-position: -480px 0px;
+			}
+			#child-4 {
+				background-position: -720px 0px;
+			}
+			#child-5 {
+				background-position: 0px -150px;
+			}
+			#child-6 {
+				background-position: -240px -150px;
+			}
+			#child-7 {
+				background-position: -480px -150px;
+			}
+			#child-8 {
+				background-position: -720px -150px;
+			}
+			#child-9 {
+				background-position: 0px -300px;
+			}
+			#child-10 {
+				background-position: -240px -300px;
+			}
+			#child-11 {
+				background-position: -480px -300px;
+			}
+			#child-12 {
+				background-position: -720px -300px;
+			}
+			#child-13 {
+				background-position: 0px -450px;
+			}
+			#child-14 {
+				background-position: -240px -450px;
+			}
+			#child-15 {
+				background-position: -480px -450px;
+			}
+			#child-16 {
+				background-position: -720px -450px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<audio src="music/The Truth That You Leave.mp3" autoplay="autoplay" id="music"></audio>
+		<table border="1">
+			<tr>
+				<td>
+					<div id="parent-1" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-1" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-2" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-2" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-3" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-3" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-4" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-4" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td>
+					<div id="parent-5" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-5" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-6" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-6" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-7" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-7" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-8" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-8" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+				
+			</tr>
+
+
+			<tr>
+
+				<td>
+					<div id="parent-9" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-9" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-10" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-10" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-11" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-11" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-12" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-12" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+				
+			</tr>
+
+
+			<tr>
+				<td>
+					<div id="parent-13" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-13" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-14" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-14" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-15" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-15" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+
+				<td>
+					<div id="parent-16" ondrop="drop(event)" ondragover="over(event)">
+						<div id="child-16" class="image" draggable="true" ondragstart="drag(event)"></div>
+					</div>
+				</td>
+				
+			</tr>
+		</table>
+			
+		<button id="startGame" type="button" onclick="exchange()">开始游戏</button>
+
+		<script>
+			let music = document.getElementById('music');
+			function exchange() {
+				music.play();
+				for(let i = 0; i < 50; i++) {
+					let images = document.getElementsByClassName('image');
+					let m = Math.floor(Math.random() * 16);
+					let n = Math.floor(Math.random() * 16);
+					imagesmParent = images[m].parentNode;
+					imagesnParent = images[n].parentNode;
+					imagesmParent.appendChild(images[n]);
+					imagesnParent.appendChild(images[m]);
+				}
+			}
+
+			function drag(e) {
+				let childId = e.target.id;
+				e.dataTransfer.setData('id',childId);
+			}
+
+			function over(e) {
+				e.preventDefault();
+			}
+
+			function drop(e) {
+				let parentId = e.dataTransfer.getData('id');
+				let dropId = e.target.id;
+				let drag = document.getElementById(parentId);
+				let replace = document.getElementById(dropId);
+				let dragParent = drag.parentNode;
+				let replaceParent = replace.parentNode;
+				dragParent.appendChild(replace);
+				replaceParent.appendChild(drag);
+				isWin();
+			}
+			
+			function isWin() {
+				let sum = 0;
+				let imageDivs = document.getElementsByClassName('image');
+				//console.log(imageDivs.length);
+				for(let i = 0; i < imageDivs.length; i++) {
+					let imageDiv = imageDivs[i];
+					let imageParentDiv = imageDiv.parentNode;
+					let imageDivId = imageDiv.getAttribute('id');
+					let imageParentDivId = imageParentDiv.getAttribute('id');
+					
+					/* //使用replace替换掉id字符串前面的，只保留数字，然后比较数字
+					if(imageDivId.replace('child-', '') === imageParentDivId.replace('parent-', '')) {
+						sum++;
+					} else {
+						return;
+					}
+					*/
+					//使用substr直接截取字符串后半部分的数字，来进行比较
+					let childLastId = imageDivId.substr(6,2);
+					let parentLastId = imageParentDivId.substr(7,2);
+					if(childLastId === parentLastId) {
+						sum++;
+					} else {
+						return;
+					}
+				}
+				if(sum === 16) {
+					alert('恭喜！你赢了！');
+				}
+			}
+
+		</script>
+	</body>
+</html>
