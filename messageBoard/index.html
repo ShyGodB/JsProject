@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>留言板</title>
+		<style>
+			*{margin:0;padding:0;}
+			#mainBox {
+				width: 300px;
+				height: auto;
+				min-height: 700px;
+				border: 1px solid #333;
+				padding: 10px;
+				background: #F6F6F6;
+				margin: 10px auto;
+				border-radius: 5px;
+				position: relative;
+			}
+			input{
+				width: 80%;
+				height: 20px;
+				padding:0 3px;
+				color:#;
+			}
+			#determineButton {
+				width: 40px;
+				height: 20px;
+				float: right;
+				border: groove;
+				border-color: black;
+				border-width: 1px;
+				background-color: #A6ACAF;
+				border-radius: 7px;
+			}
+			#list {
+				width: 100%;
+				height: auto;
+				left: 0;
+				position: absolute;			
+			}
+			li {
+				width: 100%;	
+				font-size: 16px;
+				height: auto;
+				overflow: hidden;
+				border-bottom: 3px solid;
+				text-indent: 10px;
+				margin-top: 10px;
+				line-height: 20px;
+				font-weight: bold;
+				color: #666;
+			}
+			#list button {
+				width: 30px;
+				height: 20px;
+				float: right;
+				border: groove;
+				border-color: black;
+				border-width: 1px;
+				background-color: #A6ACAF;
+				border-radius: 7px;
+			}
+
+		</style>
+	</head>
+	<body>
+
+		<div id="mainBox">
+			<input type="text" id="userInput"/>
+		    <button id="determineButton" type="button">确定</button>
+		    <ul id="list"></ul>
+		</div>
+
+		<script>
+			window.onload=function(){
+				let userInput = document.getElementById('userInput');
+				let determineButton = document.getElementById('determineButton');
+				let deleteButton = document.getElementById('deleteButton');
+				let ulObject = document.getElementById('list');
+
+				document.onkeypress = function(e) {
+					let ev = e || window.event;
+					if (ev.keyCode === 13) {
+						determineButton.click();
+					}
+				}
+
+				determineButton.onclick = function() {
+					if(userInput.value === '') {
+						alert('请输入您的留言！');
+					}
+					let liObject = document.createElement('li')
+					let liArray = ulObject.getElementsByTagName('li');
+					let buttonObject = document.createElement('button');
+					let buttonArray = liObject.getElementsByTagName('button');
+					liObject.innerHTML = userInput.value;
+
+					if(liArray.length > 0) {
+						ulObject.insertBefore(liObject,liArray[0]);
+					} else {
+						ulObject.appendChild(liObject);
+					}
+
+					userInput.value = '';
+					liObject.appendChild(buttonObject);
+					buttonObject.type = 'button';
+					buttonObject.innerHTML = '删除';
+
+					buttonObject.onclick = function() {
+						console.log('a');
+						ulObject.removeChild(this.parentNode);
+					}
+				}		
+			}
+
+		</script>
+</body>
+</html>

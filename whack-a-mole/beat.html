@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>打地鼠</title>
+
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				font-size: 14px;
+				font-family: Arial,'微软雅黑','microsoft yahei';
+				background-image: url(images/night.jpeg);
+				width:100%;
+				height:100%;
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+			}
+			#Map {
+				position: relative;
+				margin-top: 10px;
+				margin-left: 20px;
+				top: -9px;
+				left: 477px;
+				
+			}
+			.box {
+				position: absolute;
+				background: #A1887F;;
+				left: 0;
+				border: 2px groove black;
+			}
+			.up {
+				position: absolute;
+				background: url(images/1.png) no-repeat;
+				background-size: 80px 80px;
+				cursor: pointer;
+			}
+			.down {
+				position: absolute;
+				background: url(images/2.png) no-repeat;
+				background-size: 80px 80px;
+				cursor: pointer;
+			}
+			.boom {
+				position: absolute;
+				background: url(images/3.png) no-repeat;
+				background-size: 80px 80px;
+				cursor: pointer;
+			}
+			#topBox {
+				width: 394px;
+				height: 150px;
+				position: relative;
+				left: 497px;
+				background-color:#A1887F;
+				border: 3px groove #A1887F;;
+				border-width: 5px;
+				border-radius: 10px;
+
+			}
+			#startMusic {
+				width: 200px;
+				height: 72px;
+				position: absolute;
+				background-color:#A1887F;
+				left: 25%;
+				font-size: 30px;
+				border: 3px groove #A1887F;;
+				border-radius: 10px;
+			}
+			p {
+				left: 10px;
+				width: 100%;
+				height: 40%;
+				font-size: 22px;
+				position: absolute;
+			}
+			#getP {
+				top: 80px;
+			}
+			#reduceP{
+				top: 110px;
+			}
+			span {
+				top: 6px;
+				left: 65px;
+				width: 100%;
+				height: 100%;
+				font-size: 22px;
+				position: absolute;
+
+			}
+		</style>
+	</head>
+	<body>
+		<audio src="music/FlowerDance.mp3" autoplay="autoplay" id="backgroundMusic" loop="true"></audio>
+		<audio src="music/1.wav" id="clickMusic"></audio>
+		<audio src="music/boom.wav" id="boom"></audio>
+
+		<div id="topBox">
+			<button type="button" id="startMusic">开始游戏</button>
+			<p id="getP">得分:<span id="getScore">0</span></p>
+			<p id="reduceP">失分:<span id="reduceScore">0</span></p>
+		</div>
+
+		<div id="Map"></div>
+
+		<script type="text/javascript">
+			let clickMusic = document.getElementById('clickMusic');
+			let backgroundMusic = document.getElementById('backgroundMusic');
+			let startMusic = document.getElementById('startMusic');
+			let map = document.getElementById('Map');
+			let getScore = document.getElementById('getScore');
+			let reduceScore = document.getElementById('reduceScore');
+			let boom = document.getElementById('boom');
+			let column = 5;
+			let row =  5;
+			let boxWidth = 80;
+			let boxHeight = 80;
+			let onOff = false;
+			let add = parseInt(getScore.innerHTML);
+			let negative = parseInt(reduceScore.innerHTML);
+			let timer;
+			let time = 3000;
+			
+			window.onload = function() {
+				createMap();	
+			}
+			
+			function clickBox(_this) {
+				clickMusic.play();	
+				let index = _this.id;
+				let class_name = _this.className;
+				if(onOff == true) {
+					if(class_name == 'up') {
+						document.getElementById(index).setAttribute('class','down');
+						add += 1;
+						getScore.innerHTML = add;
+						time -= 20;
+					}
+					if(class_name == 'box') {
+						boom.play();
+						document.getElementById(index).setAttribute('class','boom');
+						negative += 1;
+						reduceScore.innerHTML = negative;
+						winOrLose();		
+					}
+				}
+			}
+			function winOrLose() {
+				if(negative >= 10) {	
+					if(onOff == true) {
+						alert('游戏结束,你的得分是:' + getScore.innerHTML);
+						onOff = false;
+					}
+					clearMap();
+					resetScore();
+					clearTimeout(timer);
+				}
+			}
+
+			function createMap() {
+				for(let x = 0; x < column; x++) {
+					for(let y = 0; y < row; y++) {	
+					let div = document.createElement('div');
+					div.setAttribute('class', 'box');
+					div.setAttribute('id', y * column + x);
+					div.setAttribute("style", 'width:' + boxWidth + 'px; height:' + boxHeight + 'px; top:' + (boxHeight * y) + 'px; left:'+(boxWidth * x) + 'px;');
+					div.setAttribute('onclick', 'clickBox(this)');
+					map.appendChild(div);
+					}
+				}	
+			}
+				
+			startMusic.onclick = function() {
+				resetScore();
+				time = 3000;
+				onOff = true;
+				backgroundMusic.play();
+				createDishu();	
+			}
+
+			function resetScore() {
+				if(add > 0) {
+					add = 0;
+					getScore.innerHTML = add;
+				}
+				if(negative > 0) {
+					negative = 0;
+					reduceScore.innerHTML = negative;
+				}
+			}
+
+			function clearMap() {
+				for(let x = 0; x < column; x++) {
+					for(let y = 0; y < row; y++) {
+						let index = y * column + x;
+						if(document.getElementById(index).className == 'up') {
+							negative += 1;
+							reduceScore.innerHTML = negative;
+							document.getElementById(index).setAttribute('class','box');
+						} else {
+							document.getElementById(index).setAttribute('class','box');
+						}
+					}
+				}
+				winOrLose();
+			}
+
+			function createDishu() {
+				clearMap();
+				let number = Math.floor(Math.random() * 3 + 1);
+				for(let i = 0; i < number; i++) {
+					let x = Math.floor(Math.random() * row);
+					let y = Math.floor(Math.random() * column);
+					let index = y * column + x;
+					document.getElementById(index).setAttribute('class','up');
+				}
+				timer = setTimeout(createDishu, time);	
+			}
+			
+
+		</script>
+	</body>
+</html>

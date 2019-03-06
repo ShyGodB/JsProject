@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>图片轮播</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				text-decoration: none;
+			}
+			body {
+				padding: 20px;
+				background-color: #777781;
+
+			}
+			#mainBox {
+				width: 960px;
+				height: 600px;
+				border: 3px solid black;
+				position: absolute; 
+				z-index: 1;
+				overflow: hidden;
+				top: 10%;
+				left: 15%;
+			}
+			#imageList {
+				width: 9600px; 
+				height: 600px; 
+				position: absolute; 
+				z-index: 1;
+			}
+			#imageList img {
+				width: 10%;
+				height: 100%;
+				float: left;
+			}
+			#imageButtons {
+				position: absolute; 
+				height: 10px; 
+				width: 300px; 
+				z-index: 2; 
+				bottom: 20px; 
+				left: 350px;
+			}
+			#imageButtons span {
+				cursor: pointer; 
+				float: left; 
+				border: 2px solid #fff; 
+				width: 12px; 
+				height: 12px; 
+				border-radius: 50%; 
+				background: #333; 
+				margin-right: 5px;
+			}
+			#imageButtons .on {  
+				background: red;
+			}
+			.arrow { cursor: pointer; 
+				display: none; 
+				line-height: 39px; 
+				text-align: center; 
+				font-size: 36px; 
+				font-weight: bold; 
+				width: 40px; 
+				height: 40px;  
+				position: absolute; 
+				z-index: 2; 
+				top: 180px; 
+				background-color: RGBA(0,0,0,.3); 
+				color: #fff;
+			}
+			.arrow:hover { 
+				background-color: RGBA(0,0,0,.7);
+			}
+			#mainBox:hover .arrow { 
+				display: block;
+				top: 45%;
+			}
+       		#prev { 
+       			left: 20px;
+       		}
+        	#next { 
+        		right: 20px;
+        	}
+			
+		</style>
+
+	</head>
+
+	<body>
+		<div id="mainBox">
+			<div id="imageList" style="left: -960px">
+				<img src="images/yuzhou.jpg" alt="1">
+				<img src="images/cat.jpg" alt="1">
+				<img src="images/dongman.jpg" alt="2">
+				<img src="images/shanhe.jpg" alt="3">
+				<img src="images/shuidi.jpg" alt="4">
+				<img src="images/xingkong.jpg" alt="5">
+				<img src="images/xue.jpg" alt="6">
+				<img src="images/yuzhou.jpeg" alt="7">
+				<img src="images/yuzhou.jpg" alt="8">
+				<img src="images/cat.jpg" alt="8">
+			</div>
+
+			<div id="imageButtons">
+				<span index="1" class="on"></span>
+				<span index="2"></span>
+				<span index="3"></span>
+				<span index="4"></span>
+				<span index="5"></span>
+				<span index="6"></span>
+				<span index="7"></span>
+				<span index="8"></span>
+			</div>
+
+			<a href="javascript:;" id="prev" class="arrow">&lt;</a>
+    		<a href="javascript:;" id="next" class="arrow">&gt;</a>
+		</div>
+
+
+		<script>
+			
+			window.onload = function() {
+				let mainBox = document.getElementById('mainBox');
+				let imageList = document.getElementById('imageList');
+				let imageButtons = document.getElementById('imageButtons').getElementsByTagName('span');
+				let prev = document.getElementById('prev');
+				let next = document.getElementById('next');
+				let index = 1;
+				let onOff = false;
+				let timer;
+
+				
+				function showButton() {
+					for(let i = 0; i < imageButtons.length; i++) {
+						if(imageButtons[i].className == 'on') {
+							imageButtons[i].className = '';
+							break;
+						}
+					}
+					imageButtons[index - 1].className = 'on';
+				}
+
+				function switchImage(a) {
+					odOff = true;
+					let newLeft = parseInt(imageList.style.left) + a;
+					let totalTime = 300;  //运动的总时间
+					let intevalTime = 10;	//位移间隔时间
+					let speed = a/(totalTime/intevalTime); //每次的位移量 
+
+					function go() {
+						if((speed < 0 && parseInt(imageList.style.left) > newLeft) || (speed > 0 && parseInt(imageList.style.left) < newLeft) ) {
+							imageList.style.left = parseInt(imageList.style.left) + speed + 'px';
+							setTimeout(go,intevalTime);
+						} else {
+							onOff = false;
+							imageList.style.left = newLeft + 'px';
+							if(newLeft > -960) {
+								imageList.style.left = '-7680px';
+							}
+							if(newLeft < -7680) {
+								imageList.style.left = '-960px';
+							}
+						}
+					}
+					go();
+				}
+				
+				for(let i = 0; i < imageButtons.length; i++) {
+					imageButtons[i].onmouseover = function() {
+						if(this.className == 'on') {
+							return;
+						}
+						let myIndex = parseInt(this.getAttribute('index'));
+						a = -960 * (myIndex - index);
+						if(onOff === false) {
+							switchImage(a);
+						}
+						index = myIndex;
+						showButton();
+					}
+				}
+
+				next.onclick = function() {
+					if(index == 8){
+						index = 1;
+					} else {
+						index += 1;
+					}
+					showButton();
+					if(onOff === false) {
+						switchImage(-960);
+					}
+				}
+	
+				prev.onclick = function() {
+					if(index == 1){
+						index = 8;
+					} else {
+						index -= 1;
+					}
+					showButton();
+					if(onOff === false) {
+						switchImage(960);
+					}
+				}
+
+				function play() {
+					timer = setTimeout(function() {
+						next.click();
+						play();
+					},3000)
+				}
+
+				function stop() {
+					clearTimeout(timer);
+				}
+
+				mainBox.onmouseover = stop;
+				mainBox.onmouseout = play;
+			}
+
+		</script>
+
+	</body>
+</html>

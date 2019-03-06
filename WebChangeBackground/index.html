@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Change The Web Color</title>
+
+		<style>
+			img,button,body {
+				margin: 0;
+				padding: 0;
+			}
+
+			#clickPage {
+				position: -webkit-sticky;
+				position: sticky;
+				top: 10px;
+			}
+
+			button {
+				border-width: 3px;
+				border-radius: 10px;
+				text-align: center;
+			}
+
+			img {
+				width:100%;
+				height:100%;
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+				background-color: #8fffff;
+			}
+
+			#homePage{
+				text-align: right;
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+		<div id="homePage">
+			
+			<div id="clickPage">
+
+				<button type="button" id="btn1" onclick="changeImg1()">繁星紫宇</button>
+				<button type="button" id="btn2" onclick="changeImg2()">璀璨星河</button>
+				<button type="button" id="btn3" onclick="changeImg3()">黄昏雪景</button>
+				<button type="button" id="btn4" onclick="changeImg4()">晚间星空</button>
+				<button type="button" id="btn5" onclick="changeImg5()">艺术水滴</button>
+				<button type="button" id="btn6" onclick="changeImg6()">大好山河</button>
+				<button type="button" id="btn7" onclick="changeImg7()">动漫桐人</button>	
+				<button type="button" id="btn8" onclick="changeImg8()">一键还原</button>
+
+			</div>
+			<div id="imgPage"> 
+
+				<img src="img/cat.jpg" id="imgP">
+
+			</div>
+		</div>
+
+		<script>
+
+			function changeImg1() {
+				document.getElementById('imgP').src='img/yuzhou.jpg';
+			}
+			function changeImg2() {
+				document.getElementById('imgP').src='img/yuzhou.jpeg';
+			}
+			function changeImg3() {
+				document.getElementById('imgP').src='img/xue.jpg';
+			}
+			function changeImg4() {
+				document.getElementById('imgP').src='img/xingkong.jpg';
+			}
+			function changeImg5() {
+				document.getElementById('imgP').src='img/shuidi.jpg';
+			}
+			function changeImg6() {
+				document.getElementById('imgP').src='img/shanhe.jpg';
+			}
+			function changeImg7() {
+				document.getElementById('imgP').src='img/dongman.jpg';
+			}
+			function changeImg8() {
+				document.getElementById('imgP').src='img/cat.jpg';
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+

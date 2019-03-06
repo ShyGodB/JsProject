@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+ 	<head>
+  		<meta charset="UTF-8">
+  		<title>消除表情游戏</title> 		
+  		
+  		<style>
+			* { 
+				margin: 0px;
+				padding: 0px; 
+			}
+			body { 
+				background-image: url(night.jpeg);
+				width:100%;
+				height:100%;
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+			}
+			
+			#mainBox { 
+				width: 920px; 
+				height: 600px; 
+				margin: 0px auto; 
+				position: relative;  
+				color: #f2f2f2; 
+			}
+			#topBox { 
+				width: 100%; 
+				height: 145px; 
+			}
+			#topBox #title { 
+				width: 100% ; 
+				height: 50px; 
+				text-align: center; 
+				line-height: 70px; 
+				font-size: 25px; 
+				font-weight: 900; 
+			}
+			#topBox #sm { 
+				width: 100%; 
+				height: 50px; 
+				text-align: center; 
+				line-height: 50px;
+			}
+			#startButton { 
+				width: 140px; 
+				height: 40px; 
+				outline: 0; 
+				border: 1px solid #241d13; 
+				background: #a73f2d; 
+				color: #fff; 
+				border-radius: 5px;
+				box-shadow: 0 0 15px #7a2a1d; 
+				font-size: 16px; 
+				margin-left:390px;
+				cursor:pointer; 
+			}
+			#bottomBox { 
+				width: 100%;    /*920px*/
+				height: 455px; 
+				background: #fff; 
+				position: absolute; 
+				left: 0px; 
+				top: 165px; 
+				color: #333; 
+			}
+			#leftBottomBox { 
+				width: 135px; 
+				height: 55px; 
+				float: left; 
+				background-color:#E5E7E9;
+				border: groove;
+				border-width: 5px;
+				border-radius: 10px;
+			}
+			#leftBottomBox p { 
+				width: 145px; 
+				line-height: 25px; 
+			}
+			#rightBottomBox { 
+				width: 771px; 
+				height: 455px; 
+				border-left: 2px solid #333; 
+				float: left; 
+				position: relative; 
+				overflow: ouden; 
+			}
+			#image { 
+				width: 34px; 
+				height: 34px; 
+				cursor: pointer; 
+				position: absolute; 
+				left: 0px; 
+				top: 0px; 
+				display: none;
+			}
+			#guichuBox {
+				width: 145px;
+				height: 145px;
+				bottom: 0;
+				position: absolute;
+			}
+			#guichuPicture {
+				width: 100%;
+				height: 100%;
+			}
+			#guiguiBox {
+				width: 140px;
+				height: 140px;
+				top: 100px;
+				left: 5px;
+				position: absolute;
+			}
+			#guiguiPicture  {
+				width: 100%;
+				height: 100%;
+				font-size: 20px;
+
+			}
+  		</style>
+	</head>
+	<body>
+		<audio src="music/LvYeXianZong.mp3" id="backgroundMusic" autoplay="autoplay"></audio>
+ 		<audio src="music/Barrett.mp3" id="buttonMusic"></audio>
+
+		<div id="mainBox">
+			<div id="topBox">
+				<p id="title">你的鼠标有多快？</p>
+				<p id="sm">游戏说明：点击“开始游戏”，随机掉下QQ表情，点中它，千万别让他掉下来！！</p>
+				<input id="startButton" type="button" value="开始游戏">
+			</div>
+
+			<div id="bottomBox">
+				<div id="leftBottomBox">
+					<p>得分：<span id="getScore">0</span></p>
+					<p>失分：<span id="reduceScore">0</span></p>
+
+					<div id="guiguiBox">
+						<img src="img/guigui.gif" id="guiguiPicture">
+					</div>
+
+					<div id="guichuBox">
+						<img src="img/guichu.png" id="guichuPicture">
+					</div>
+				</div>
+
+				<div id="rightBottomBox" style="top: 0px;">
+					<img id="image" ondragstart="return false"/>
+				</div>
+			</div>
+		</div>
+
+		<script>
+
+			let mainBox = document.getElementById('mainBox');
+			let topBox = document.getElementById('topBox');
+			let bomBox = document.getElementById('bottomBox');
+			let leftBox = document.getElementById('leftBottomBox');
+			let rightBox = document.getElementById('rightBottomBox');
+			let startButton = document.getElementById('startButton');
+			let arrImg = ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png','img/6.png','img/7.png','img/8.png','img/9.png','img/10.png','img/11.png'];
+			let image = document.getElementById('image');
+			let getScore = document.getElementById('getScore');
+			let reduceScore = document.getElementById('reduceScore');
+			let buttonMusic = document.getElementById('buttonMusic');
+			let backgroundMusic = document.getElementById('backgroundMusic');
+			let time = 50;
+			let t = 0;
+			let timer;
+			let onOff = false;
+			let rightBoxTimer;
+			let allCostTime = 500;  //定义rightBox震动的总时间
+			let intevalTime = 50;  //定义rightBox震动的间隔时间.
+			let trueFalse = true;
+			let j = 0;
+
+			function shock() {
+				let rightBoxY = Number(rightBox.style.top);
+				
+					if(trueFalse == true) {
+						rightBoxY = 30 + 'px';
+						trueFalse = false
+					} else {
+						rightBoxY = -30 + 'px';
+						trueFalse = true
+					}
+				
+			}
+
+			
+
+			
+
+			startButton.onclick = function () {
+				backgroundMusic.play();
+				startButton.value = "游戏进行中...";
+				startButton.disabled = true;
+				time = 50;
+				resetImage();
+				down();
+			}
+
+			image.onclick = function () {
+				buttonMusic.play();
+				image.src = 'img/qq.png';
+				let addNum = Number(getScore.innerHTML);
+				addNum += 1;
+				image.disabled = true;
+				time -= 2;
+				getScore.innerHTML = addNum;
+				resetImage();
+				down();
+			}
+
+			function down() {
+				clearInterval(timer);
+				t = 0;
+				timer = setInterval(function() {
+					image.style.top = t + 'px';
+					t += 5;
+					if(image.style.display == 'block') {
+						if(image.style.top == '445px') {
+							if(onOff = true) {
+								let subNum = Number(reduceScore.innerHTML);
+								subNum += 1;
+								reduceScore.innerHTML = subNum;
+								if(subNum >= 10) {
+									startButton.value = '开始游戏';
+									startButton.disabled = false;
+									alert('游戏结束，你的得分为:' + getScore.innerHTML + '分');
+									resetScore();
+									onOff = false
+								} else {
+									resetImage();
+									this.down();
+								}
+							}					
+						}		
+					}
+				}, time); 
+			}
+
+			function resetImage() {
+				let x = Math.floor(Math.random() * 740);
+				let n = Math.floor(Math.random() * arrImg.length);  //1
+				image.src = arrImg[n];   //随机获取图片   1
+				image.style.top = '0px';	//图片纵坐标归零  1
+				image.style.display = 'block'; //显示图片  1
+				image.style.left = x + 'px';  //横坐标随机  1	
+			}
+
+			function resetScore() {
+				if (getScore.innerHTML > 0) {
+					getScore.innerHTML = 0;
+				}
+				if(reduceScore.innerHTML > 0) {
+					reduceScore.innerHTML = 0;
+				}
+			}
+
+			
+		</script>
+
+	</body>
+</html>

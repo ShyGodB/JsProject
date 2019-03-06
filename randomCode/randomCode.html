@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>随机生成验证码并验证</title>
+		<style>
+			* { 
+				margin: 0;
+				padding: 0; 
+
+			}
+			body {
+				background-image: url(back.jpg);
+			}
+			#div1 {
+				width: 500px;
+				margin: 20px auto;
+				text-align: center;
+			}
+			#input {
+				width:100px;
+				height:30px;
+			}
+			
+			#code {
+				display: inline-block;
+				width: 80px; height: 30px;
+				background: #aaa;
+				text-align: center;
+				line-height: 30px;
+				color: #fff;
+				text-decoration: none;
+				letter-spacing: 7px;
+				padding-left: 7px;
+				vertical-align: middle;
+				font-weight: bold;
+			}
+			#btn {
+				width: 60px;
+				height: 30px;
+				outline: 0;
+				border: #153021;
+				border-radius: 10px;
+				background-color: #499990;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="div1">	
+			<input id="input" type="text" placeholder="请输入验证码" onclick="createCode()"">
+			<a href="javascript:" id="code" onclick="createCode()"></a>
+			
+			<button type="button" id="btn" value="验证" onclick="validate()">确定</button>
+		</div>	
+
+		<script>	
+			let systemCode = document.getElementById('code');	
+			let btn = document.getElementById('btn');
+			let code = '';
+			
+			document.onkeypress = function(e) {
+				let ev = e || window.event;
+				if(ev.keyCode == 13) {
+					document.getElementById('btn').click();
+				}
+			}
+
+			function createCode() {
+				code = '';
+				let codeLength = 4;
+				let random = [0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+				for(let i = 0; i < codeLength; i++) {
+					let index = Math.floor(Math.random() * 36);
+					code += random[index];
+				}
+				systemCode.innerHTML = code;
+			}
+
+ 
+			function validate() {
+				let userInput = document.getElementById('input').value.toUpperCase();
+				if(userInput == 0) {
+					alert('请输入验证码');
+				} else if(userInput != code) {
+					alert('验证码输入错误，请重新输入');
+				} else {
+					window.open('https://www.baidu.com/');
+				}
+			}
+		</script>
+	</body>
+</html>

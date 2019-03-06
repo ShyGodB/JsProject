@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>贪吃蛇</title>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			text-align: center;
+			background: #A1887F;
+		}
+		p {
+			top: 30px;
+			left: 449px;
+			font-size: 24px;
+			position: absolute;
+		}
+		#introduce {
+			position: relative;
+			width: 100%;
+			height: 80px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		#startGame {
+			width: 80px;
+			height: 30px;
+			font-size: 16px
+		}
+		#map {
+			left: 30%;
+			margin-left: auto;
+			margin-right: auto;
+			position: absolute;
+		}
+		.box {
+			position: absolute;
+			background: white;
+			border: 2px groove black;
+		}
+		.snake {
+			background: red;
+			position: absolute;
+			border: 1px solid #fff;
+		}
+		.food {
+			background: blue;	
+			position: absolute;
+			border: 1px solid #fff;
+		}
+	</style>
+</head>
+<body>
+	<audio src="music/"></audio>
+	<div id="introduce">
+		<button id="startGame" type="button" hidden>开始游戏</button>
+		<p>提示:使用上下左右控制蛇移动,空格键重新开始游戏。</p>
+	</div>
+
+	<div id="map"></div>
+
+
+	<script>
+		let map = document.getElementById('map');
+		let startGame = document.getElementById('startGame');
+		let long = 20;
+		let wide = 20;
+		let boxWidth = 30;
+		let boxHeight = 30;
+		let mapArray = [];  //地图-二维数组
+		let snake = [];
+		let snake_x = null;
+		let snake_y = null;
+		let food_x = null;
+		let food_y = null;
+		let food_position;
+		let end_position;
+		let direction = null; //定义方向，默认不移动
+		let timer;
+		let time = 500;
+		let score = 1;
+		
+		window.onload = function() {
+			draw();
+			move();
+		}
+		
+		startGame.onclick = function() {
+			clearTimeout(timer);
+			score = 1;
+			time = 500;
+			direction = null;
+			for(let i = 0; i < snake.length; i++) {
+				//document.getElementById(snake[i]).setAttribute('class', 'snake');
+				document.getElementById(snake[0]).setAttribute('class', 'snake');
+				if(i>0) {
+					document.getElementById(snake[i]).setAttribute('class', 'box');
+				}
+			}
+			
+			snake.length = 1;
+			move();
+
+		}
+
+		document.onkeydown = function(event) {
+			var _left = 37, _up = 38, _right = 39, _down = 40,_startGame = 32;
+			var event = event || window.event;
+			var key_value = event.which || event.keyCode;
+			switch(key_value) {
+				case _left:
+					if(direction != 'right') {
+						direction = 'left';
+					}
+					break;
+				case _up:
+					if(direction != 'down') {
+						direction = 'up';
+					}
+					break;
+				case _right:
+					if(direction != 'left') {
+						direction = 'right';
+					}
+					break;
+				case _down:
+					if(direction != 'up') {
+						direction = 'down';
+					}
+					break;
+				case _startGame:
+					startGame.click();
+					break;
+			}
+		}
+		
+		function move() {
+			let init_positon = snake[0];
+			let start_position = snake[0]; 
+			switch(direction) {
+				case 'left':
+					start_position = snake[0] - 1;
+					break;
+				case 'up':
+					start_position = snake[0] - wide;
+					break;
+				case 'right':
+					start_position = snake[0] + 1;
+					break;
+				case 'down':
+					start_position = snake[0] + wide;
+					break;
+			}
+			//边界判断
+			if((direction =='left' && (start_position + 1) % wide == 0) || (direction == 'right' && start_position % wide == 0 ) || start_position < 0 || start_position > long * wide) {
+				alert('GAMEOVER!!!你的得分为:' + score);
+				return false;
+			}
+			
+			if(init_positon != start_position && isInArray(start_position, snake)) {
+				alert('GAMEOVER!!!你的得分为:' + score);
+				return false;
+			}
+			
+			snake.unshift(start_position); //向数组的开头添加元素
+			//document.getElementById(start_position).setAttribute('class', 'snake');
+			food_position = food_y * wide + food_x;
+			if(start_position == food_position) {
+				food_x = Math.floor(Math.random() * long);
+				food_y = Math.floor(Math.random() * wide);
+				food_position = food_y * wide + food_x;
+				document.getElementById(food_position).setAttribute('class', 'food');
+				if(isInArray(food_position,snake)) {
+					document.getElementById(food_position).setAttribute('class', 'food');
+				}
+				if(snake.length >= 1 && snake.length <= 10) {
+					score += 1;
+				} else if(snake.length >= 11 && snake.length <= 20) {
+					score += 3;
+				} else if(snake.length >= 21 && snake.length <= 30) {
+					score += 5;
+				} else if(snake.length >= 31 && snake.length <= 50) {
+					score += 10;
+				} else if(snake.length >= 51) {
+					score += 30;
+				} 
+				time -= 5;
+				console.log(time);
+			} else {
+				end_position = snake.pop();
+				if(end_position != snake[0]) {
+					document.getElementById(end_position).setAttribute('class', 'box');
+				}
+			}
+			for(let i = 0; i < snake.length; i++) {
+				//document.getElementById(snake[i]).setAttribute('class', 'snake');
+				document.getElementById(snake[i]).setAttribute('class', 'snake');
+			}
+			if(end_position != snake[0]) {
+				document.getElementById(end_position).setAttribute('class', 'box');
+			}
+			timer = setTimeout(this.move, time);
+		}
+		
+		function draw() {   //生成地图跟蛇
+			for(let x = 0; x < long; x++) {
+				mapArray[x] = [];
+				for(let y = 0; y < wide; y++) {
+					mapArray[x][y] = 0; //0为默认地图，1为蛇，2为食物
+				}
+			}
+			snake_x = Math.floor(Math.random() * long);
+			snake_y = Math.floor(Math.random() * wide);
+			food_x = Math.floor(Math.random() * long);
+			food_y = Math.floor(Math.random() * wide);
+			mapArray[snake_x][snake_y] = 1;
+			mapArray[food_x][food_y] = 2;
+			for(let i = 0; i < long; i++) {
+				for(let j = 0; j < wide; j++) {
+					let div = document.createElement('div');
+					if(mapArray[i][j] === 1) {
+						div.setAttribute('class', 'snake');
+						snake[0] = j * wide + i;
+					} else if(mapArray[i][j] === 2) {
+						div.setAttribute('class', 'food');
+					} else {
+						div.setAttribute('class', 'box');
+					}
+					div.setAttribute('id', j * wide + i);
+					div.setAttribute('style', 'width: ' + boxWidth + 'px;height: ' + boxHeight + 'px;left: ' + boxWidth * i + 'px;top: ' + boxHeight * j + 'px;');
+					//div.innerHTML = j * wide + i +'<br/>[' + i + ',' + j + ']';
+					map.appendChild(div);
+				}
+			}
+		}
+		
+
+		function isInArray(string, array) {
+			for(var i = 0; i < array.length; i++) {
+				if(array[i] === string) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+	</script>
+
+</body>
+</html>

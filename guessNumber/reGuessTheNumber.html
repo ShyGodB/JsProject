@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head		
+		<meta charset = "utf - 8">
+		<title> Guess The Number </title>
+		<style>
+		    html {
+		    	font-family: sans-serif;
+		    }
+
+		    #lastNumber {
+		    	color: blue;
+		    }
+
+		    input {
+		    	border-width: 5px;
+		    	background-color: #ECF0F1;
+		    	border-color: #29B6F6;
+		    }
+
+
+			body {
+				height:auto;
+				text-align: center;
+				width: 60%;
+				margin: 0 auto;
+				border-style: groove;
+				border-width: 10px;
+				border-radius: 20px;
+				border-color: red;
+				background-image: url(images.jpg);
+				background-size: 100%, 100%;
+			}
+
+			#resultParas {
+
+				border-width: 3px;
+				border-radius: 5px;
+				padding: 3px;
+			}
+
+			#btn {
+				display: none;
+			}
+		</style>
+
+	</head>
+	<body>
+	
+			<h1>This is a guessing game<h1>
+			<p id = 'p1'>我刚才随机选定了一个100以内的自然数。看你能否在 10 次以内猜中它。每次我都会告诉你所猜的结果是高了还是低了。</p>
+
+			<div id = "form">
+				<label  for = "guessInputNumber">请输入一个数字：</label>
+				<input type="text" id="guessInputNumber" >
+				<button type = "button" id = "guessSubmit" onclick = "checkGuess()">确定</button>
+				<button id = "btn" onclick="resetGame();">重新开始新游戏</button>
+			</div>
+
+			<div id = resultParas>
+				<p type = "text" id = "lastNumber"></p>
+				<p type = "text" id = "lastResult"></p>
+				<p type = "text" id = "prompt"></p>
+			</div>
+		
+		
+		<script type = "text/javascript" language="javascript">
+
+			
+			let systemNumber = Math.floor(Math.random() * 100 + 1);
+
+			const lastNumber = document.getElementById("lastNumber");
+			const result = document.getElementById("result");
+			const prompt = document.getElementById("prompt");
+
+			const guessInputNumber = document.getElementById("guessInputNumber");
+			const guessSubmit = document.getElementById("guessSubmit");
+
+			let guessCount = 1;
+			let resetButton;
+
+			guessInputNumber.focus();
+			
+
+			document.onkeypress = function(e) {
+            	var ev = e || window.event;
+            	if (ev.keyCode == 13) {//aa 为button ID
+                document.getElementById("guessSubmit").click();
+            }
+        }	
+
+			
+
+
+			function checkGuess() {
+
+
+				const userGuess = Number(guessInputNumber.value);
+
+
+				if(guessCount === 1) {
+					lastNumber.textContent = '上次猜的数： ';
+				}
+				lastNumber.textContent += userGuess + ' ';
+
+				if(userGuess === systemNumber) {
+					lastResult.textContent = '恭喜你猜对了。';
+					lastResult.style.backgroundColor = 'green';
+					prompt.textContent = ' ';
+					setGameOver();
+				} else if (guessCount ===10) {
+					lastResult.textContent = '!!!GameOver!!!';
+					lastResult.style.backgroundColor = 'red';
+					prompt.textContent = ' ';
+					setGameOver();
+				} else {
+					lastResult.textContent = '你猜错了';
+					lastResult.style.backgroundColor = 'red';
+					if(userGuess > systemNumber) {
+						prompt.textContent = '刚才你猜高了';
+					} else {
+						prompt.textContent = '刚才你猜低了';
+					}
+				}
+
+				guessCount ++;
+				guessInputNumber.value = ' ';
+				guessInputNumber.focus();
+			}
+
+
+			function setGameOver() {
+				guessInputNumber.disabled = true;
+				guessSubmit.disabled = true;
+
+				let resetButton = document.getElementById("btn");
+				
+				resetButton.style.display = 'block';
+				
+				/*resetButton = document.createElement('button');
+				resetButton.textContent = '开始新游戏'; 
+				document.body.appendChild(resetButton);*/
+
+				// resetButton.addEventListener('click', resetGame);
+				
+				// resetButton.style.display = 'none';
+			}
+
+			function resetGame() {
+				guessCount = 1;
+				const resetParas = document.querySelectorAll('resultParas p');
+				for(let i = 0; i < resetParas.length; i++) {
+					resetParas[i].textContent = ' ';
+				}
+				let resetButton = document.getElementById("btn");
+				resetButton.style.display = 'none';
+				//resetButton.parentNode.removeChild(resetButton);
+
+				guessInputNumber.disabled = false;
+				guessSubmit.disabled = false;
+				guessInputNumber.value = ' ';
+				guessInputNumber.focus();
+
+				lastResult.textContent = "";
+				lastResult.style.backgroundColor = 'white';
+				lastNumber.textContent = "";
+				systmNumber = Math.floor(Math.random() * 100 + 1);
+			}
+
+
+
+
+		</script>
+	</body>
+</html>
